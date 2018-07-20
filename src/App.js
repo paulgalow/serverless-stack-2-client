@@ -80,8 +80,13 @@ class App extends Component {
           <Navbar.Collapse>
             <Nav pullRight>
               {this.state.isAuthenticated
-                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                  // Fragment stores a group of children without wrapping them inside a div
+                // Fragments store a group of children without wrapping them inside a div
+                ? <Fragment>
+                    <LinkContainer to="/settings">
+                      <NavItem>Settings</NavItem>
+                    </LinkContainer>
+                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                  </Fragment>
                 : <Fragment>
                     <LinkContainer to="/signup">
                       <NavItem>Signup</NavItem>
