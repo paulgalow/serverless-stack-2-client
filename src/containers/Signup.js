@@ -47,17 +47,38 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
 
     try {
+      // Make a call to Cognito to signup a user. This returns a new user object.
       const newUser = await Auth.signUp({
         username: this.state.email,
         password: this.state.password
       });
-      this.setState({
-        newUser
-      });
+      // Save new user object to the state as newUser
+      this.setState({ newUser });
     } catch (e) {
-      alert(e.message);
+        // User name already exists, resend confirmation code to user's e-mail address
+        if (e.name === "UsernameExistsException") {
+          this.setState({ usernameExists: true });
+          try {
+              const newUser = await Auth.resendSignUp(this.state.email);
+              // Save new user object to the state as newUser
+              this.setState({ newUser });
+          } catch (e) {
+              // User has already entered his confirmation code successfully
+              if (e.message === "User is already confirmed.") {
+                  // Login user
+                  await Auth.signIn(this.state.email, this.state.password);
+                  // Update app's state
+                  this.props.userHasAuthenticated(true);
+                  // Redirect user to homepage
+                  this.props.history.push("/");
+              } else {
+                  alert(e.message);
+              }                    
+            }                                    
+          } else {
+            alert(e.message);
+          }
     }
-
     this.setState({ isLoading: false });
   }
 
@@ -67,10 +88,13 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
 
     try {
+      // Submit user e-mail and confirmation code to Cognito
       await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
+      // Login user
       await Auth.signIn(this.state.email, this.state.password);
-
+      // Update app's state
       this.props.userHasAuthenticated(true);
+      // Redirect user to homepage
       this.props.history.push("/");
     } catch (e) {
       alert(e.message);
@@ -89,7 +113,10 @@ export default class Signup extends Component {
             value={this.state.confirmationCode}
             onChange={this.handleChange}
           />
-          <HelpBlock>Please check your email for the code.</HelpBlock>
+          {/* Display user information based on username registration status */}
+          {this.state.usernameExists
+            ? <HelpBlock>You are already registered. Resending verification code to {this.state.email}</HelpBlock>
+            : <HelpBlock>Please check your email for the code.</HelpBlock>}
         </FormGroup>
         <LoaderButton
           block
@@ -149,7 +176,9 @@ export default class Signup extends Component {
     return (
       <div className="Signup">
         {this.state.newUser === null
+          // If we don't have a user object, load sign up form
           ? this.renderForm()
+          // If we do have a user object, load confirmation code form
           : this.renderConfirmationForm()}
       </div>
     );
