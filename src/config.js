@@ -2,6 +2,7 @@
 
 // Dev stage configuration
 const dev = {
+  STRIPE_KEY: "pk_test_yRtsGQNXyGtXpHoptTSZNrsW",
   s3: {
     REGION: "eu-central-1",
     // Bucket to store our user's uploads
@@ -21,6 +22,7 @@ const dev = {
 
 // Prod stage configuration
 const prod = {
+  STRIPE_KEY: "pk_test_yRtsGQNXyGtXpHoptTSZNrsW",
   s3: {
     REGION: "eu-central-1",
     // Bucket to store our user's uploads
