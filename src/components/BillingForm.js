@@ -97,7 +97,8 @@ class BillingForm extends Component {
                 by the parent component, i.e. the Settings container. */}
                 <LoaderButton
                     block
-                    bsSize="large"
+                    className="btn btn-info btn-lg"
+                    bsSize="large"                    
                     type="submit"
                     text="Purchase"
                     isLoading={loading}
