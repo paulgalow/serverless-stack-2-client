@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { API, Storage } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import { s3Upload } from "../libs/awsLib";
+import { s3Upload, s3Delete } from "../libs/awsLib";
 import config from "../config";
 import "./Notes.css";
 
@@ -90,7 +90,7 @@ export default class Notes extends Component {
     event.preventDefault();
 
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
-      alert("Please pick a file smaller than 5MB");
+      alert(`Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE/1000000} MB.`);
       return;
     }
 
@@ -101,6 +101,8 @@ export default class Notes extends Component {
       // the key we get from S3.
       if (this.file) {
         attachment = await s3Upload(this.file);
+        // Delete the old attachment after the new one has been uploaded successfully
+        await s3Delete(this.state.note.attachment);
       }
 
       // Save note by calling saveNote()
@@ -135,7 +137,9 @@ export default class Notes extends Component {
     try {
       // Delete note
       await this.deleteNote();
-      // await s3Delete(this.state.note.attachment);
+      // Delete note attachment if one exists
+      this.state.note.attachment && await s3Delete(this.state.note.attachment);
+      // Redirect user to home page
       this.props.history.push("/");
     } catch (e) {
       alert(e);
