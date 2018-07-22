@@ -29,27 +29,35 @@ export default class Home extends Component {
     this.setState({ isLoading: false });
   }
 
+  // Make a GET request to our API Gateway endpoint and return the results
   notes() {
     return API.get("notes", "/notes");
   }
 
   handleNoteClick = event => {
     event.preventDefault();
+    // Redirect to note's individual page
     this.props.history.push(event.currentTarget.getAttribute("href"));
   }
 
+  // Render items in notes list
   renderNotesList(notes) {
+    // Concatenate an array with an empty object with our notes array
     return [{}].concat(notes).map(
       (note, i) =>
         i !== 0
           ? <ListGroupItem
               key={note.noteId}
               href={`/notes/${note.noteId}`}
+              // On click navigate to each note's respective page
               onClick={this.handleNoteClick}
+              // Render the first line of each note as the ListGroupItem header
               header={note.content.trim().split("\n")[0]}
             >
               {"Created: " + new Date(note.createdAt).toLocaleString()}
             </ListGroupItem>
+            // Always render a create new note button as the first item in the 
+            // list (even if the list is empty).         
           : <ListGroupItem
               key="new"
               href="/notes/new"
@@ -93,6 +101,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="Home">
+        {/* Render the lander or the list of notes based on this.props.isAuthenticated */}
         {this.props.isAuthenticated ? this.renderNotes() : this.renderLander()}
       </div>
     );
