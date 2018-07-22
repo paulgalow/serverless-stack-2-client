@@ -1,5 +1,0 @@
-# We’ll need to handle requests to any non-root paths of our app. 
-# Our frontend is a single-page app and the routing is handled on the client side. 
-# We need to tell Netlify to always redirect any request to our index.html and return the 200 status code for it.
-
-/*    /index.html   200
