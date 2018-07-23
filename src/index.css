@@ -5,14 +5,21 @@ body {
   font-size: 16px;
   color: #333;
 }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "PT Serif", serif;
 }
+
+/* Tweak the style of form fields so that the mobile 
+browser does not zoom in on them on focus */
 select.form-control,
 textarea.form-control,
 input.form-control {
   font-size: 16px;
 }
+
+/* Setting the width of the input type file to prevent 
+the page on mobile from overflowing and adding a scrollbar */
 input[type=file] {
   width: 100%;
 }

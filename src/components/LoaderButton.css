@@ -1,8 +1,11 @@
 .LoaderButton .spinning.glyphicon {
   margin-right: 7px;
   top: 2px;
+  /* Spin the refresh Glyphicon infinitely with each spin taking a second */
   animation: spin 1s infinite linear;
 }
+
+/* Set spinning animation / rotation for spinning glyphicon */
 @keyframes spin {
   from { transform: scale(1) rotate(0deg); }
   to { transform: scale(1) rotate(360deg); }

@@ -1,6 +1,17 @@
+/*
+Route to ensure that a user is NOT authenticated
+
+Here we are checking to ensure that the user is not authenticated before 
+we render the component that is passed in. And in the case where the user 
+is authenticated, we use the Redirect component to simply send the user 
+to the homepage.
+*/
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
+// Read the redirect URL from the querystring so we can redirect our user
+// to the desired location after successful login.
+// Method takes the querystring parameter we want to read and returns it
 function querystring(name, url = window.location.href) {
   name = name.replace(/[[]]/g, "\\$&");
 

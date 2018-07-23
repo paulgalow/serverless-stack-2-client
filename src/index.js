@@ -7,7 +7,9 @@ import registerServiceWorker from "./registerServiceWorker";
 import config from "./config";
 import "./index.css";
 
+// Initialize AWS Amplify to make our components talk to AWS
 Amplify.configure({
+  // AWS Cognito setup
   Auth: {
     mandatorySignIn: true,
     region: config.cognito.REGION,
@@ -15,11 +17,13 @@ Amplify.configure({
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },
+  // AWS S3 setup
   Storage: {
     region: config.s3.REGION,
     bucket: config.s3.BUCKET,
     identityPoolId: config.cognito.IDENTITY_POOL_ID
   },
+  // AWS API Gateway setup
   API: {
     endpoints: [
       {

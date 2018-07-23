@@ -12,6 +12,7 @@ export default ({
 }) =>
   <Button
     className={`LoaderButton ${className}`}
+    // Ensure that the button is disabled when isLoading is true, i.e. user can't click it
     disabled={disabled || isLoading}
     {...props}
   >
