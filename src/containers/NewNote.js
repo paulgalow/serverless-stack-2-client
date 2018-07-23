@@ -18,6 +18,7 @@ export default class NewNote extends Component {
     };
   }
 
+  // Making a POST request to our API Gateway end point and passing in our note object
   createNote(note) {
     return API.post("notes", "/notes", {
       body: note
@@ -34,6 +35,9 @@ export default class NewNote extends Component {
     });
   }
 
+  // Save the file object as a class property. We use a class property instead 
+  // of saving it in the state because the file object we save does not change 
+  // or drive the rendering of our component.
   handleFileChange = event => {
     this.file = event.target.files[0];
   }
